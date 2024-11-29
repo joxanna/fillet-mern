@@ -9,6 +9,7 @@ console.log(`App running in ${environment} mode`);
 
 // import connection from db.js
 const connectDB = require('./config/db');
+const port = process.env.PORT || 3030;
 
 const app = express()
 
@@ -24,6 +25,6 @@ app.get('/', (req, res) => {
 });
 
 // start server code
-app.listen(process.env.PORT,async()=>{
-  console.log("Server is running on port number:", process.env.PORT)
-});
+app.listenport,async()=>{
+  console.log("Server is running on port number:", port)
+};
