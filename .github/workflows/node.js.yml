@@ -19,7 +19,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]  # Node versions to test with
+        node-version: [18.x, 20.x, 22.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
 
     steps:
     - name: Checkout code
@@ -46,23 +47,32 @@ jobs:
         echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
         echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
 
+    - name: MongoDB in GitHub Actions
+      uses: supercharge/mongodb-github-action@1.11.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+
+
     # Install backend dependencies
     - name: Install backend dependencies
       run: |
         cd backend
         npm ci
 
-    # Run build if there's a build script defined
-    - name: Build the backend project (if applicable)
-      run: |
-        cd backend
-        npm run start --if-present
+    # # Run build if there's a build script defined
+    # - name: Build the backend project (if applicable)
+    #   run: |
+    #     cd backend
+    #     npm run start --if-present
 
     # Run tests within the backend directory
     - name: Run tests for backend
       run: |
         cd backend
         npm run test
+      env:
+        MONGO_URI: mongodb://localhost:27017/test  # Mongo URI for your local MongoDB instance
+        PORT: 3000
 
     - name: Debugging - Check node version and npm versions
       run: |
