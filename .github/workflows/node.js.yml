@@ -7,13 +7,13 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
+    # paths:
+    #   - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
   pull_request:
     branches:
       - main
-    paths:
-      - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
+    # paths:
+    #   - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
 
 jobs:
   build:
@@ -54,7 +54,7 @@ jobs:
     - name: Run tests for backend
       run: |
         cd backend  # Ensure we're in the backend directory
-        npm test
+        npm run test
 
     - name: Debugging - Check node version and npm versions
       run: |
