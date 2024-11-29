@@ -27,36 +27,38 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Change to the backend directory before setting up Node.js and running tests
+    - name: Change to backend directory
+      run: cd backend
+
+    # Use Node.js ${{ matrix.node-version }} for the backend directory
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    # Change directory to backend before running any commands
-    - name: Change to backend directory
-      run: cd backend
-
-    # Install dependencies within the backend directory
+    # Install backend dependencies
     - name: Install backend dependencies
       run: |
-        cd backend
-        npm ci
+        cd backend  # Ensure we're in the backend directory
+        npm ci  # This will install dependencies from package-lock.json
 
-    # Run start if there's a start script defined
+    # Run build if there's a build script defined
     - name: Build the backend project (if applicable)
       run: |
-        cd backend
+        cd backend  # Ensure we're in the backend directory
         npm run start --if-present
 
     # Run tests within the backend directory
     - name: Run tests for backend
       run: |
-        cd backend
+        cd backend  # Ensure we're in the backend directory
         npm test
 
     - name: Debugging - Check node version and npm versions
       run: |
+        cd backend  # Ensure we're in the backend directory
         node -v
         npm -v
         npm ls backend
