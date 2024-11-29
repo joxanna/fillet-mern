@@ -26,5 +26,5 @@ app.get('/', (req, res) => {
 
 // start server code
 app.listenport,async()=>{
-  console.log("Server is running on port number:", port)
+  console.log("Server is running on port number:", port);
 };
