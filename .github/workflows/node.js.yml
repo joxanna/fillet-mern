@@ -21,11 +21,33 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+
+    # Ensure environment variables are set (add the required ones)
+    - name: Set environment variables
+      run: |
+        echo "MONGO_URI=$MONGO_URI" >> $GITHUB_ENV
+        echo "NODE_ENV=test" >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build the project (if applicable)
+      run: npm run build --if-present
+
+    - name: Run tests
+      run: npm test
+      env:
+        # Pass any sensitive environment variables or those not set in GitHub Actions yet
+        MONGO_URI: ${{ secrets.MONGO_URI }} # Make sure you store sensitive data like MONGO_URI in GitHub Secrets
+
+    - name: Debugging - Check node version and npm versions
+      run: |
+        node -v
+        npm -v
+        npm ls
