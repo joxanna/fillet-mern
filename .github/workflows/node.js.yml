@@ -73,10 +73,3 @@ jobs:
       env:
         MONGO_URI: mongodb://localhost:27017/test  # Mongo URI for your local MongoDB instance
         PORT: 3000
-
-    - name: Debugging - Check node version and npm versions
-      run: |
-        cd backend
-        node -v
-        npm -v
-        npm ls backend
