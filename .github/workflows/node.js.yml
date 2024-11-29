@@ -5,19 +5,23 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths:
+      - 'backend/**'  # Trigger workflow when files inside backend folder are changed
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths:
+      - 'backend/**'  # Trigger workflow when files inside backend folder are changed
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
@@ -28,7 +32,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    # Ensure environment variables are set (add the required ones)
+    # Ensure environment variables are set
     - name: Set environment variables
       run: |
         echo "MONGO_URI=$MONGO_URI" >> $GITHUB_ENV
@@ -43,8 +47,7 @@ jobs:
     - name: Run tests
       run: npm test
       env:
-        # Pass any sensitive environment variables or those not set in GitHub Actions yet
-        MONGO_URI: ${{ secrets.MONGO_URI }} # Make sure you store sensitive data like MONGO_URI in GitHub Secrets
+        MONGO_URI: ${{ secrets.MONGO_URI }} # Example of using secrets for environment variables
 
     - name: Debugging - Check node version and npm versions
       run: |
