@@ -1,10 +1,24 @@
+# macOS system files
 .DS_Store
+
+# Node.js dependencies (any node_modules directory at any level)
 **/node_modules/
+
+# JSPM packages
 **/jspm_packages/
+
+# JetBrains IDEs (e.g., IntelliJ, PhpStorm, WebStorm)
 .idea/
+
+# VSCode configuration files
 .vscode/
-*/coverage/
+
+# Coverage reports (any coverage directory at any level)
+**/coverage/
+coverage/
+
+# Database files (e.g., for MS Access)
 *.mdb
-*/node_modules/
-node_modules
+
+# Environment variables (files that should not be committed)
 .env
