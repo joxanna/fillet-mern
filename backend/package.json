@@ -17,7 +17,9 @@
     "jest": "^29.7.0",
     "mongodb": "^6.11.0",
     "mongodb-memory-server": "^10.1.2",
-    "mongoose": "^8.8.3"
+    "mongoose": "^8.8.3",
+    "ramda-adjunct": "^5.1.0",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
