@@ -13,27 +13,17 @@ describe('Database Tests', () => {
     await mongoose.disconnect();
   });
 
-
-  // successful connection test
-  describe('Database Connection', () => {
-    test('should connect to the database successfully', () => {
-      expect(mongoose.connection.readyState).toBe(1);
-    });
+  it('should connect to the database successfully', () => {
+    expect(mongoose.connection.readyState).toBe(1);
   });
 
-  // connection failure test
-  describe('Database Connection Failure', () => {
-    test('should fail to connect with an invalid URI', async () => {
-      const invalidURI = 'mongodb://invalid-uri';
-      await expect(mongoose.connect(invalidURI)).rejects.toThrow();
-    });
+  it('should fail to connect with an invalid URI', async () => {
+    const invalidURI = 'mongodb://invalid-uri';
+    await expect(mongoose.connect(invalidURI)).rejects.toThrow();
   });
 
-  // disconnection test
-  describe('Database Disconnection', () => {
-    test('should disconnect from the database successfully', async () => {
-      await mongoose.disconnect();
-      expect(mongoose.connection.readyState).toBe(0); // 0 means disconnected
-    });
+  it('should disconnect from the database successfully', async () => {
+    await mongoose.disconnect();
+    expect(mongoose.connection.readyState).toBe(0);
   });
 });
