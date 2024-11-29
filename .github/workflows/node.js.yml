@@ -25,19 +25,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Change to the backend directory before setting up Node.js and running tests
-    - name: Change to backend directory
-      run: cd backend
-
-    # Use Node.js ${{ matrix.node-version }} for the backend directory
-    - name: Use Node.js ${{ matrix.node-version }}
+    # Set up Node.js environment globally for the job
+    - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-      run: |
-        cd backend
 
+    # Cache npm dependencies
+    - name: Cache npm dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
 
     # Install backend dependencies
     - name: Install backend dependencies
