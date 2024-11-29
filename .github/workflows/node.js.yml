@@ -8,12 +8,12 @@ on:
     branches:
       - main
     paths:
-      - 'backend/**'  # Trigger workflow when files inside backend folder are changed
+      - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
   pull_request:
     branches:
       - main
     paths:
-      - 'backend/**'  # Trigger workflow when files inside backend folder are changed
+      - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
 
 jobs:
   build:
@@ -21,10 +21,11 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [18.x, 20.x, 22.x]  # Node versions to test with
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -32,25 +33,30 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    # Ensure environment variables are set
-    - name: Set environment variables
+    # Change directory to backend before running any commands
+    - name: Change to backend directory
+      run: cd backend
+
+    # Install dependencies within the backend directory
+    - name: Install backend dependencies
       run: |
-        echo "MONGO_URI=$MONGO_URI" >> $GITHUB_ENV
-        echo "NODE_ENV=test" >> $GITHUB_ENV
+        cd backend
+        npm ci
 
-    - name: Install dependencies
-      run: npm ci
+    # Run build if there's a build script defined
+    - name: Build the backend project (if applicable)
+      run: |
+        cd backend
+        npm run build --if-present
 
-    - name: Build the project (if applicable)
-      run: npm run build --if-present
-
-    - name: Run tests
-      run: npm test
-      env:
-        MONGO_URI: ${{ secrets.MONGO_URI }} # Example of using secrets for environment variables
+    # Run tests within the backend directory
+    - name: Run tests for backend
+      run: |
+        cd backend
+        npm test
 
     - name: Debugging - Check node version and npm versions
       run: |
         node -v
         npm -v
-        npm ls
+        npm ls backend
