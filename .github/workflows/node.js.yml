@@ -5,13 +5,11 @@ name: Node.js CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
     # paths:
     #   - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
     # paths:
     #   - 'backend/**'  # Trigger workflow when files inside the backend folder are changed
 
@@ -37,28 +35,31 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+      run: |
+        cd backend
+
 
     # Install backend dependencies
     - name: Install backend dependencies
       run: |
-        cd backend  # Ensure we're in the backend directory
-        npm ci  # This will install dependencies from package-lock.json
+        cd backend
+        npm ci
 
     # Run build if there's a build script defined
     - name: Build the backend project (if applicable)
       run: |
-        cd backend  # Ensure we're in the backend directory
+        cd backend
         npm run start --if-present
 
     # Run tests within the backend directory
     - name: Run tests for backend
       run: |
-        cd backend  # Ensure we're in the backend directory
+        cd backend
         npm run test
 
     - name: Debugging - Check node version and npm versions
       run: |
-        cd backend  # Ensure we're in the backend directory
+        cd backend
         node -v
         npm -v
         npm ls backend
