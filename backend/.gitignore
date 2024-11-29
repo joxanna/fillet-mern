@@ -1,1 +1,10 @@
+.DS_Store
+**/node_modules/
+**/jspm_packages/
+.idea/
+.vscode/
+*/coverage/
+*.mdb
+*/node_modules/
+node_modules
 .env
